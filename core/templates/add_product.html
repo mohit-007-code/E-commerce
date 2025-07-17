@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-container input[type="text"], 
+        .form-container textarea,
+        .form-container input[type="number"],
+        .form-container input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #e68a00;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Product</h1>
+        
+        <div class="form-container">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter product name" required>
+
+                <label for="description">Product Description:</label>
+                <textarea id="description" name="description" placeholder="Enter product description" required></textarea>
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" placeholder="Enter product price" required step="0.01">
+
+                <label for="image">Product Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <input type="submit" value="Add Product">
+            </form>
+
+            <a href="{% url 'product-list-page' %}" class="back-link">Back to Product List</a>
+        </div>
+    </div>
+</body>
+</html>
