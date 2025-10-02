@@ -1,84 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Welcome to Our Store</title>
-    <style>
-        /* General Body Styling */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+{% extends 'base.html' %}
 
-        /* Hero Section */
-        .hero-section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #3498db, #2ecc71);
-            color: white;
-            text-align: center;
-            padding: 0 20px;
-        }
+{% block navbar %}{% endblock %}
 
-        .hero-section h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-        }
+{% block title %}Home - Welcome to Our Store{% endblock %}
 
-        .hero-section p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
+{% block extra_head %}
+<style>
+  :root {
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
 
-        /* Button Styling */
-        .cta-button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            background-color: #e67e22;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+    --accent-blue: #3498db;
+    --accent-green: #2ecc71;
+    --accent-orange: #e67e22;
+    --accent-orange-dark: #d35400;
+    --text-light: var(--zinc-50);
+  }
 
-        .cta-button:hover {
-            background-color: #d35400;
-            transform: translateY(-5px);
-        }
+  body.dark-theme {
+    background-color: var(--zinc-900);
+    color: var(--text-light);
+    font-family: 'Arial', sans-serif;
+  }
 
-        .cta-button:active {
-            transform: translateY(0);
-        }
+  .hero-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+    color: var(--text-light);
+    text-align: center;
+    padding: 0 20px;
+  }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #2c3e50;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <h1>Welcome to Our Online Store</h1>
-        <p>Your one-stop shop for the latest products and amazing deals. Discover a wide range of high-quality products just for you.</p>
-        <a href="{% url 'product-list-page' %}" class="cta-button">Browse Our Products</a>
-    </section>
+  .hero-section h1 {
+    font-size: 3.8rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  }
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Our Store | All Rights Reserved</p>
-    </footer>
-</body>
-</html>
+  .hero-section p {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    font-weight: 400;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .cta-button {
+    padding: 15px 36px;
+    font-size: 1.3rem;
+    background-color: var(--accent-orange);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0 6px 18px rgba(230, 126, 34, 0.6);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    user-select: none;
+  }
+
+  .cta-button:hover {
+    background-color: var(--accent-orange-dark);
+    transform: translateY(-5px);
+    box-shadow: 0 9px 25px rgba(211, 84, 0, 0.8);
+  }
+
+  .cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(211, 84, 0, 0.5);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messages = [
+      "Discover the latest trends and exclusive deals!",
+      "Shop top-quality products at unbeatable prices.",
+      "Limited-time offers on your favorite items.",
+      "Free shipping on orders over ₹1000.",
+      "New arrivals added weekly — check them out now!"
+    ];
+
+    let index = 0;
+    const messageElement = document.getElementById('dynamic-message');
+
+    if (messageElement) {
+      setInterval(() => {
+        index = (index + 1) % messages.length;
+        messageElement.textContent = messages[index];
+      }, 5000); // Updates every 5 seconds
+    }
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" role="banner" aria-label="Welcome Hero">
+  <h1>Welcome to Our Online Store</h1>
+  <p id="dynamic-message">Your one-stop shop for the latest products and amazing deals.</p>
+  <a href="{% url 'product-list-page' %}" class="cta-button" role="link" aria-label="Browse Our Products">Browse Our Products</a>
+</section>
+{% endblock %}

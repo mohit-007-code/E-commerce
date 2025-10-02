@@ -1,67 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You for Shopping</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You for Shopping</title>
+  <style>
+    :root {
+      --zinc-50: #fafafa;
+      --zinc-100: #f4f4f5;
+      --zinc-200: #e4e4e7;
+      --zinc-300: #d4d4d8;
+      --zinc-400: #a1a1aa;
+      --zinc-500: #71717a;
+      --zinc-600: #52525b;
+      --zinc-700: #3f3f46;
+      --zinc-800: #27272a;
+      --zinc-900: #18181b;
 
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+      --accent-green: #2ecc71;
+      --accent-green-dark: #27ae60;
+      --accent-blue: #3498db;
+      --accent-blue-dark: #2980b9;
 
-        h1 {
-            font-size: 2rem;
-            color: #2ecc71;
-        }
+      --bg-light: var(--zinc-50);
+      --bg-dark: var(--zinc-900);
+      --text-light: var(--zinc-900);
+      --text-dark: var(--zinc-50);
+    }
 
-        p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-top: 20px;
-        }
+    body.light-theme {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      font-family: Arial, sans-serif;
+    }
 
-        .btn {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
+    body.light-theme .container {
+      width: 80%;
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
 
-        .btn:hover {
-            background-color: #2980b9;
-        }
-    </style>
+    body.light-theme h1 {
+      font-size: 2.4rem;
+      color: var(--accent-green);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    body.light-theme p {
+      font-size: 1.2rem;
+      color: var(--zinc-600);
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    body.light-theme p strong {
+      color: var(--zinc-800);
+      font-weight: 600;
+    }
+
+    body.light-theme .btn {
+      display: inline-block;
+      background-color: var(--accent-blue);
+      color: white;
+      padding: 14px 28px;
+      font-size: 1.2rem;
+      text-decoration: none;
+      border-radius: 50px;
+      margin-top: 30px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+
+    body.light-theme .btn:hover {
+      background-color: var(--accent-blue-dark);
+      transform: translateY(-3px);
+    }
+
+    /* Dark theme */
+    body.dark-theme {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      font-family: Arial, sans-serif;
+    }
+
+    body.dark-theme .container {
+      width: 80%;
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: var(--zinc-800);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+      text-align: center;
+    }
+
+    body.dark-theme h1 {
+      font-size: 2.4rem;
+      color: var(--accent-green);
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 0 0 8px var(--accent-green);
+    }
+
+    body.dark-theme p {
+      font-size: 1.2rem;
+      color: var(--zinc-400);
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    body.dark-theme p strong {
+      color: var(--zinc-100);
+      font-weight: 600;
+    }
+
+    body.dark-theme .btn {
+      display: inline-block;
+      background-color: var(--accent-blue-dark);
+      color: var(--text-dark);
+      padding: 14px 28px;
+      font-size: 1.2rem;
+      text-decoration: none;
+      border-radius: 50px;
+      margin-top: 30px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(41, 128, 185, 0.8);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+
+    body.dark-theme .btn:hover {
+      background-color: var(--accent-blue);
+      transform: translateY(-3px);
+      color: var(--text-dark);
+      box-shadow: 0 8px 25px rgba(52, 152, 219, 0.9);
+    }
+
+    /* Theme toggle based on system preference on load */
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+      if (!body.classList.contains('light-theme') && !body.classList.contains('dark-theme')) {
+        body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
+      }
+    });
+  </script>
 </head>
 <body>
+  <div class="container">
+    <h1>Thank You for Shopping with Us!</h1>
+    <p>Your order is confirmed. Here are the details:</p>
+    <p><strong>Address:</strong> {{ address }}</p>
+    <p><strong>Phone:</strong> {{ phone }}</p>
+    <p><strong>Payment Method:</strong> {{ payment_method|title }}</p>
 
-    <div class="container">
-        <h1>Thank You for Shopping with Us!</h1>
-        <p>Your order is confirmed. Here are the details:</p>
-        <p><strong>Address:</strong> {{ address }}</p>
-        <p><strong>Phone:</strong> {{ phone }}</p>
-        <p><strong>Payment Method:</strong> {{ payment_method|title }}</p>
-
-        <a href="{% url 'product-list-page' %}" class="btn">Continue Shopping</a>
-    </div>
-
+    <a href="{% url 'product-list-page' %}" class="btn">Continue Shopping</a>
+  </div>
 </body>
 </html>

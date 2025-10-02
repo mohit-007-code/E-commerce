@@ -1,274 +1,239 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopMe</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f3f4f6;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+{% extends "base.html" %}
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+{% block title %}ShopMe - Products{% endblock %}
 
-        .navbar .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
+{% block extra_head %}
+<style>
+  /* Color variables for Zinc light and dark themes */
+  :root {
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
+    --zinc-950: #09090b;
 
-        .navbar .search-bar {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
+    --accent-light: #f59e0b; /* amber-500 */
+    --accent-dark: #d97706; /* amber-600 */
 
-        .navbar .search-bar input {
-            width: 170%;
-            padding: 12px;
-            border-radius: 25px;
-            border: none;
-            font-size: 1rem;
-            margin-right: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: 0.3s ease-in-out;
-        }
+    --danger-light: #ef4444; /* red-500 */
+    --danger-dark: #b91c1c; /* red-700 */
 
-        .navbar .search-bar input:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
-        }
+    --bg-light: var(--zinc-50);
+    --bg-dark: var(--zinc-900);
 
-        .navbar .menu-links {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
+    --text-light: var(--zinc-900);
+    --text-dark: var(--zinc-50);
+  }
 
-        .navbar .menu-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+  /* Theme styles */
+  body.light-theme {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  body.light-theme .product-item {
+    background: linear-gradient(145deg, var(--zinc-50), var(--zinc-100));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  body.light-theme .price {
+    color: var(--accent-dark);
+  }
+  body.light-theme .buy-now-button {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  }
+  body.light-theme .buy-now-button:hover {
+    background: var(--accent-dark);
+  }
+  body.light-theme .delete-button {
+    background: linear-gradient(90deg, var(--danger-light), #f87171);
+  }
+  body.light-theme .delete-button:hover {
+    background: var(--danger-dark);
+  }
 
-        .navbar .menu-links a:hover {
-            color: #ffeaa7;
-        }
+  body.dark-theme {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  body.dark-theme .product-item {
+    background: linear-gradient(145deg, var(--zinc-800), var(--zinc-700));
+    box-shadow: 0 2px 12px rgba(0,0,0,0.7);
+  }
+  body.dark-theme .price {
+    color: var(--accent-light);
+  }
+  body.dark-theme .buy-now-button {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+  }
+  body.dark-theme .buy-now-button:hover {
+    background: #b45309;
+  }
+  body.dark-theme .delete-button {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+  }
+  body.dark-theme .delete-button:hover {
+    background: #7f1d1d;
+  }
 
-        .navbar .icon-button {
-            background-color: white;
-            color: #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+  /* Product list grid and responsiveness */
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 20px;
+  }
 
-        .navbar .icon-button:hover {
-            background-color: #2980b9;
-            color: white;
-        }
+  /* Product item styling */
+  .product-item {
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .product-item:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
 
-        .product-list {
-            column-count: 4; 
-            column-gap: 20px;
-            padding: 20px;
-        }
+  /* Image container with fixed aspect ratio */
+  .product-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    background: white;
+  }
+  body.dark-theme .product-image-container {
+    background: var(--zinc-900);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+  }
 
-        .product-item {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            margin-bottom: 20px;
-            break-inside: avoid; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            padding: 15px;
-            text-align: center;
-        }
+  .product-image-container img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    border-radius: 16px;
+  }
 
-        .product-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
+  .product-item:hover .product-image-container img {
+    transform: scale(1.05);
+  }
 
-        .product-item img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-bottom: 5px solid #f1c40f;
-        }
+  /* Optional badge */
+  .product-item .badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent-light);
+    color: white;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
 
-        .product-item h2 {
-            font-size: 1.4rem;
-            margin: 15px 15px 5px;
-            color: #2c3e50;
-        }
+  /* Content spacing */
+  .product-item h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: inherit;
+  }
+  .product-item p {
+    font-size: 1rem;
+    color: var(--zinc-400);
+    margin-bottom: 12px;
+  }
 
-        .product-item p {
-            font-size: 1rem;
-            color: #7f8c8d;
-            margin: 0 15px 10px;
-        }
+  .price {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
 
-        .price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-            margin: 0 15px 15px;
-        }
+  /* Buttons */
+  .buy-now-button,
+  .delete-button {
+    display: block;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    margin: 5px auto;
+    width: 80%;
+    max-width: 250px;
+    text-align: center;
+    text-decoration: none;
+  }
+  .buy-now-button:hover {
+    transform: translateY(-6px);
+  }
+  .delete-button {
+    margin-top: 8px;
+  }
 
-        .buy-now-button,
-        .delete-button {
-            display: block;
-            background: linear-gradient(90deg, #ff7e5f, #feb47b);
-            color: white;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            text-align: center;
-            margin: 10px 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            border: none;
-        }
+  .no-products-found {
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--zinc-500);
+    margin-top: 60px;
+  }
+</style>
 
-        .buy-now-button:hover {
-            background: #e67e22;
-            transform: translateY(-5px);
-        }
+<script>
+  // Theme toggle based on system preference on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const userPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const body = document.body;
+    if (!body.classList.contains('light-theme') && !body.classList.contains('dark-theme')) {
+      body.classList.add(userPrefersDark ? 'dark-theme' : 'light-theme');
+    }
+  });
+</script>
+{% endblock %}
 
-        .delete-button {
-            background: linear-gradient(90deg, #ff6b6b, #ff4b4b);
-            width: 90%;
-        }
-
-        .delete-button:hover {
-            background: #e74c3c;
-            transform: translateY(-5px);
-        }
-
-        .no-products-found {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #888;
-            margin-top: 50px;
-        }
-
-        footer {
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        @media (max-width: 1200px) {
-            .product-list {
-                column-count: 3;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .product-list {
-                column-count: 2;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .product-list {
-                column-count: 1;
-            }
-
-            .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .navbar .search-bar input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .navbar .menu-links {
-                width: 100%;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-
-            .navbar .menu-links a {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar">
-        <a href="{% url 'home-page' %}" class="logo">ShopMe</a>
-
-        <div class="search-bar">
-            <form action="{% url 'product-list-page' %}" method="get">
-                <input type="text" name="q" placeholder="Search for products..." value="{{ request.GET.q }}">
-            </form>
-          
-        </div>
-
-        <div class="menu-links">
-            <a href="{% url 'product-list-page' %}">Home</a>
-            <a href="{% url 'add-product' %}">Add Product</a>
-            <a href="{% url 'cart_page' %}" class="icon-button">🛒</a>
-        </div>
-    </div>
-
-    <div class="product-list">
-        {% if products %}
-            {% for product in products %}
-                <div class="product-item">
-                    <a href="{% url 'product-detail-page' pk=product.id %}">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    </a>
-                    <h2>{{ product.name }}</h2>
-                    <p>{{ product.description }}</p>
-                    <p class="price">Rs {{ product.price }}</p>
-                    <a href="{% url 'add-to-cart' pk=product.id %}" class="buy-now-button">Add To Cart</a>
-                    <form action="{% url 'delete-product' pk=product.id %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
-                    </form>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p class="no-products-found">No products found. Please try searching again.</p>
-        {% endif %}
-    </div>
-
-    <footer>
-        <p>&copy; 2025 ShopMe. All Rights Reserved.</p>
-    </footer>
-</body>
-</html>
+{% block content %}
+<div class="product-list">
+  {% if products %}
+    {% for product in products %}
+      <div class="product-item" tabindex="0" aria-label="Product {{ product.name }}">
+        <a href="{% url 'product-detail-page' pk=product.id %}" aria-describedby="desc-{{ product.id }}">
+          <div class="product-image-container">
+            <img src="{{ product.image.url }}" alt="{{ product.name }} image" loading="lazy" />
+            {# Optional badge example: Uncomment if needed #}
+            {# <div class="badge">New</div> #}
+          </div>
+        </a>
+        <h2>{{ product.name }}</h2>
+        <p id="desc-{{ product.id }}">{{ product.description }}</p>
+        <p class="price">Rs {{ product.price }}</p>
+        <a href="{% url 'add-to-cart' pk=product.id %}" class="buy-now-button" role="button">Add To Cart</a>
+        <form action="{% url 'delete-product' pk=product.id %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+        </form>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="no-products-found">No products found. Please try searching again.</p>
+  {% endif %}
+</div>
+{% endblock %}

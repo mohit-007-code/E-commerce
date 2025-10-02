@@ -1,153 +1,216 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Now - Checkout</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+{% extends "base.html" %}
 
-        .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+{% block title %}Checkout{% endblock %}
 
-        .checkout-title {
-            text-align: center;
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+{% block extra_head %}
+<style>
+  :root {
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
 
-        .checkout-form {
-            display: flex;
-            flex-direction: column;
-        }
+    --accent-blue: #3498db;
+    --accent-blue-dark: #2980b9;
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    --bg-light: var(--zinc-50);
+    --bg-dark: var(--zinc-900);
 
-        .form-group label {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-            display: block;
-            margin-bottom: 8px;
-        }
+    --text-light: var(--zinc-900);
+    --text-dark: var(--zinc-50);
+  }
 
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            margin-top: 5px;
-        }
+  body.dark-theme {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    font-family: 'Arial', sans-serif;
+  }
 
-        .form-group input:focus {
-            border-color: #3498db;
-            outline: none;
-        }
+  body.light-theme {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    font-family: 'Arial', sans-serif;
+  }
 
-        .payment-methods {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
+  .container {
+    width: 80%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--zinc-800);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
 
-        .payment-option {
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-        }
+  body.light-theme .container {
+    background-color: white;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
 
-        .payment-option input {
-            margin-right: 10px;
-        }
+  .checkout-title {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    font-weight: 700;
+  }
 
-        .btn {
-            background-color: #3498db;
-            color: white;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
+  body.light-theme .checkout-title {
+    color: var(--text-light);
+  }
 
-        .btn:hover {
-            background-color: #2980b9;
-        }
+  .checkout-form {
+    display: flex;
+    flex-direction: column;
+  }
 
-        @media screen and (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 20px;
-            }
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-            .checkout-title {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-<body>
+  .form-group label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 8px;
+  }
 
-    <div class="container">
-        <h1 class="checkout-title">Checkout</h1>
-        <form method="POST" action="{% url 'checkout-complete' %}" class="checkout-form">
-            {% csrf_token %}
-            
-            <!-- Delivery Address -->
-            <div class="form-group">
-                <label for="address">Delivery Address:</label>
-                <input type="text" id="address" name="address" placeholder="Enter your address" required>
-            </div>
-    
-            <!-- Phone Number -->
-            <div class="form-group">
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-            </div>
-            
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="mkm@gmail.com" required>
-            </div>
-    
-            <!-- Payment Methods -->
-            <div class="form-group payment-methods">
-                <label class="payment-option">
-                    <input type="radio" name="payment_method" value="cash_on_delivery" required> Cash on Delivery
-                </label>
-                <label class="payment-option">
-                    <input type="radio" name="payment_method" value="upi" required> UPI
-                </label>
-            </div>
-    
-            <!-- Confirm Button -->
-            <button type="submit" class="btn">Confirm Purchase</button>
-        </form>
+  body.light-theme .form-group label {
+    color: var(--text-light);
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="tel"],
+  .form-group input[type="email"] {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1.8px solid var(--zinc-600);
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: var(--zinc-700);
+    color: var(--text-dark);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  body.light-theme .form-group input[type="text"],
+  body.light-theme .form-group input[type="tel"],
+  body.light-theme .form-group input[type="email"] {
+    background-color: white;
+    border-color: #ccc;
+    color: var(--text-light);
+  }
+
+  .form-group input[type="text"]:focus,
+  .form-group input[type="tel"]:focus,
+  .form-group input[type="email"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px var(--accent-blue);
+  }
+
+  .payment-methods {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .payment-option {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--text-white);
+    cursor: pointer;
+  }
+
+  body.light-theme .payment-option {
+    color: var(--text-light);
+  }
+
+  .payment-option input {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn {
+    background-color: var(--accent-blue);
+    color: var(--text-dark);
+    padding: 14px 25px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    margin-top: 20px;
+    user-select: none;
+  }
+
+  .btn:hover {
+    background-color: var(--accent-blue-dark);
+    transform: translateY(-3px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .container {
+      width: 95%;
+      padding: 20px;
+    }
+
+    .checkout-title {
+      font-size: 1.8rem;
+    }
+
+    .payment-methods {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" role="main" aria-labelledby="checkout-title">
+  <h1 id="checkout-title" class="checkout-title">Checkout</h1>
+  <form method="POST" action="{% url 'checkout-complete' %}" class="checkout-form" novalidate>
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="address">Delivery Address:</label>
+      <input type="text" id="address" name="address" placeholder="Enter your address" required>
     </div>
-    
 
-</body>
-</html>
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required pattern="[0-9+\-\s()]{7,}">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="mkm@gmail.com" required>
+    </div>
+
+    <div class="form-group payment-methods" role="radiogroup" aria-labelledby="payment-method-label">
+      <span id="payment-method-label" class="sr-only">Select Payment Method</span>
+      <label class="payment-option">
+        <input type="radio" name="payment_method" value="cash_on_delivery" required aria-required="true"> Cash on Delivery
+      </label>
+      <label class="payment-option">
+        <input type="radio" name="payment_method" value="upi" required aria-required="true"> UPI
+      </label>
+    </div>
+
+    <button type="submit" class="btn">Confirm Purchase</button>
+  </form>
+</div>
+{% endblock %}

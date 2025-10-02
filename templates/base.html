@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Our Store{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #211f1f;
+            color: #f3e7e7;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+        /* Navbar CSS */
+        .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar .search-bar {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar .search-bar form {
+  width: 100%;
+  max-width: 500px;
+}
+
+.navbar .search-bar input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.navbar .search-bar input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.7);
+}
+
+.navbar .menu-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-left: 20px;
+}
+
+.navbar .menu-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar .menu-links a:hover {
+  color: #ffeaa7;
+}
+
+.navbar .icon-button {
+  background-color: white;
+  color: #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.navbar .icon-button:hover {
+  background-color: #2980b9;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar .search-bar form {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .navbar .search-bar input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar .menu-links {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .navbar .menu-links a {
+    font-size: 0.9rem;
+  }
+}
+
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+     {% block navbar %}
+        {% include "partials/navbar.html" %}
+    {% endblock %}
+    {% block content %}
+    
+    {% endblock %}
+    <footer class="footer">
+        <p>&copy; 2025 Our Store | All Rights Reserved</p>
+    </footer>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

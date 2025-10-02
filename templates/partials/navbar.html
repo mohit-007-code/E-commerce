@@ -1,0 +1,22 @@
+<div class="navbar">
+  <a href="{% url 'home-page' %}" class="logo">ShopMe</a>
+
+  <div class="search-bar">
+    <form action="{% url 'product-list-page' %}" method="get" role="search" aria-label="Product search">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search for products..."
+        value="{{ request.GET.q }}"
+        aria-label="Search products"
+        autocomplete="off"
+      >
+    </form>
+  </div>
+
+  <div class="menu-links" role="navigation" aria-label="Main menu">
+    <a href="{% url 'product-list-page' %}" tabindex="0">Home</a>
+    <a href="{% url 'add-product' %}" tabindex="0">Add Product</a>
+    <a href="{% url 'cart_page' %}" class="icon-button" aria-label="View Cart" role="button" tabindex="0">🛒</a>
+  </div>
+</div>
