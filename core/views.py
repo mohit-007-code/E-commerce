@@ -43,7 +43,8 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q', '')
-        return Product.objects.filter(name__icontains=query) if query else Product.objects.all()
+        qs = Product.objects.filter(name__icontains=query) if query else Product.objects.all()
+        return qs.order_by('-created_at')
 
 class ProductDetailView(DetailView):
     model = Product
